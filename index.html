@@ -5,64 +5,190 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Restaurante Restô Dontê 2</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <link rel="stylesheet" href="/css/style.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="alternate icon" class="js-site-favicon" type="image/png" href="https://icon-library.com/images/agenda-icon/agenda-icon-8.jpg">
 </head>
 
-<body style="background-color: rgb(248, 209, 100)">
-    <h1 class="center">
+<body style="background-color:lemonchiffon">
+    <div id="app" class="container">
+      <h1 style="text-align: center; color: black; padding-top: 10px;">
         <img src="https://i.pinimg.com/originals/77/f0/7c/77f07c8002d89e9d6f56f9d6df7a9199.png" class="mr-0 padding" alt="Agenda" width="64"height="64">
         Restaurante Restô Dontê 2
         <img src="https://i.pinimg.com/originals/77/f0/7c/77f07c8002d89e9d6f56f9d6df7a9199.png" class="mr-0 padding" alt="Agenda" width="64"height="64">
     </h1><br>
     <h2 style="text-align: center; color:#000">Início Reserva</h2><br>
+
     <!--Início Carousel-->
 
     <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-        <ol class="carousel-indicators">
-          <li data-interval="500" data-slide-to="0" class="active"></li>
-          <li data-interval="500" data-slide-to="1"></li>
-          <li data-interval="500" data-slide-to="2"></li>
-        </ol>
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img class="d-block w-100" src="https://blog.saipos.com/wp-content/uploads/2018/10/Dicas-de-pratos-para-restaurante-SAIPOS-Sistema-para-Restaurantes-1.jpg" width="450" height="490" alt="Comida 01">
-          </div>
-          <div class="carousel-item">
-            <img class="d-block w-100" src="https://ibis.accor.com/editorial/imagerie/article/comida-mineira-pratos-tipicos-de-cada-regiao-do-brasil-358a_660x440.jpg" width="450" height="490" alt="Comida 02">
-          </div>
-          <div class="carousel-item">
-            <img class="d-block w-100" src="https://img.elo7.com.br/product/zoom/22565B3/adesivo-parede-prato-comida-frango-salada-restaurante-lindo-adesivo-parede.jpg" width="450" height="490" alt="Comida 03">
+      <ol class="carousel-indicators">
+        <li data-interval="500" data-slide-to="0" class="active"></li>
+        <li data-interval="500" data-slide-to="1"></li>
+        <li data-interval="500" data-slide-to="2"></li>
+      </ol>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img class="d-block w-100" src="https://blog.saipos.com/wp-content/uploads/2018/10/Dicas-de-pratos-para-restaurante-SAIPOS-Sistema-para-Restaurantes-1.jpg" width="450" height="490" alt="Comida 01">
+        </div>
+        <div class="carousel-item">
+          <img class="d-block w-100" src="https://ibis.accor.com/editorial/imagerie/article/comida-mineira-pratos-tipicos-de-cada-regiao-do-brasil-358a_660x440.jpg" width="450" height="490" alt="Comida 02">
+        </div>
+        <div class="carousel-item">
+          <img class="d-block w-100" src="https://img.elo7.com.br/product/zoom/22565B3/adesivo-parede-prato-comida-frango-salada-restaurante-lindo-adesivo-parede.jpg" width="450" height="490" alt="Comida 03">
+        </div>
+      </div>
+      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+
+
+  <!--Fim Carousel-->
+        <div id="lista" v-if="podeExibirLista">
+          <br>
+          <div style="text-align: center;">
+            <button class="btn btn-success" v-on:click="criarNovo()">Nova Reserva</button>
+          </div> 
+          <br>
+            <ul class="list-group center" style="list-style:none; text-align: center; background-color:rgb(248, 209, 100);">
+                <li class="list-group-item list-group-item-action list-group-item-warning" v-for="item in lista">
+                    <button class="btn btn-info" v-on:click="mostrarDetalhes(item.id)">{{ item.nome }}</button> 
+                    <button class="btn btn-warning" v-on:click="editar(item.id)">Editar</button>
+                    <button class="btn btn-danger" v-on:click="deletar(item.id)">Remover</button> 
+                </li>
+            </ul>
+        </div><br>
+        
+        <div id="detalhes" v-if="podeExibirDetalhes" style="padding-bottom: 10px;"> 
+            <h2>{{ reserva.nome }}</h2>
+           <h2>{{ reserva.tipo }}</h2>
+            <h2>{{ reserva.telefone }}</h2>
+            <a class="btn btn-secondary" href="#" v-on:click="exibirLista()"role="button" >Voltar</a>
+        </div>
+
+        <div id="cadastro" v-if="podeExibirFormulario">
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <input type="text" class="form-control" name="nome" id="nome" v-model="reserva.nome" />
+            </div>
+            <div class="form-group">
+                <label for="tipo">Evento :</label>
+                <select name="tipo" id="tipo" v-model="reserva.tipo">
+                    <option value="Casamento">Casamento</option>
+                    <option value="Formatura">Formatura</option>
+                    <option value="Aniversário">Aniversário</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="telefone">Telefone</label>
+                <input type="text" class="form-control" name="telefone" id="telefone" v-model="reserva.telefone" />
+            </div>
+            <div style="padding-bottom: 15px;">
+              <button class="btn btn-primary" v-on:click="cadastrar()">Salvar</button>&nbsp;&nbsp; 
+              <a class="btn btn-secondary" href="#" v-on:click="exibirLista()" role="button">Voltar</a>
           </div>
         </div>
-        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-        </a>
-      </div>
 
-
-    <!--Fim Carousel-->
-        <br>
-
-    <ul class="list-group center" style="background-color:rgb(248, 209, 100)">
-        <li class="list-group-item list-group-item-action list-group-item-warning" th:each="reserva : ${lista}">
-            <a th:href="@{/detalhes/{id}(id=${reserva.id})}" th:text="${reserva.nome}"> Nome </a>
-            <a th:href="@{/editar/{id}(id=${reserva.id})}"> <img src="https://cdn.icon-icons.com/icons2/1674/PNG/512/person_110935.png" class="mr-3" alt="Usuário" width="32" height="32"> Editar <img src="http://simpleicon.com/wp-content/uploads/pen-15.png" class="mr-3" alt="Editar" width="15" height="15"> </a>
-            <a th:href="@{/deletar/{id}(id=${reserva.id})}">Deletar <img src="https://cdn.icon-icons.com/icons2/1489/PNG/512/rubbishbin_102620.png" class="mr-3" alt="Deletar" width="20" height="20"> </a>
-        </li>
-    </ul>
-    <br>
-    <br>
-    <div style="text-align: center; padding-bottom: 20px;">
-        <a class="button" href="/cadastro" role="button">Nova Reserva</a>
     </div>
+
+    <script>
+        var app = new Vue ({
+            el: '#app',
+            data: {
+               podeExibirLista: false,
+               podeExibirDetalhes: false,
+               podeExibirFormulario: false,
+                lista: [],
+                reserva: {}
+            },
+            methods: {
+                exibirDetalhes: function(){
+                    this.podeExibirLista = false;
+                    this.podeExibirDetalhes = true;
+                    this.podeExibirFormulario = false;
+                },
+                exibirLista: function(){
+                    this.podeExibirLista = true;
+                    this.podeExibirDetalhes = false;
+                    this.podeExibirFormulario = false;
+                },
+                exibirFormulario: function(){
+                    this.podeExibirLista = false;
+                    this.podeExibirDetalhes = false;
+                    this.podeExibirFormulario = true;
+                },
+                listarTodos: function() {
+                    fetch('http://localhost:8080/')
+                    .then ( (resposta) => resposta.json() )
+                    .then ( (objetoLista) => {
+                        console.log(objetoLista);
+                        this.lista = objetoLista;
+                    })
+                },
+                lerDetalhes: function(id) {
+                    //this.reserva = this.lista.find(item => item.id == id);
+                    fetch('http://localhost:8080/detalhes/' + id)
+                    .then( (resposta) => resposta.json() )
+                    .then( (objetoReserva) => {
+                        console.log(objetoReserva);
+                        this.reserva = objetoReserva;
+                    })
+                },
+                deletar: function (id) {
+                    fetch('http://localhost:8080/deletar/' + id)
+                    .then( () => { 
+                        this.listarTodos();
+                        this.reserva = {};
+                     } )
+                },
+                cadastrar: function () {
+                    const headers = new Headers( { 'Content-Type': 'application/json' } );
+
+                    fetch('http://localhost:8080/adicionar',  
+                    {
+                        method: 'POST',
+                        headers,
+                        body: JSON.stringify(this.reserva)
+                    }
+                    )
+                    .then( (resposta) => resposta.json() )
+                    .then( (objetoReserva) => {
+                        console.log(objetoReserva);
+                        this.reserva = objetoReserva;
+                        this.listarTodos();
+                        this.exibirDetalhes();
+                    });
+                },
+                limparCampos: function(){
+                    this.reserva= {};
+                },
+                criarNovo: function(){
+                    this.limparCampos();
+                    this.exibirFormulario();
+                },
+                editar: function(id){
+                    this.lerDetalhes(id);
+                    this.exibirFormulario();
+                },
+                mostrarDetalhes: function(id){
+                    this.lerDetalhes(id);
+                    this.exibirDetalhes();
+                }
+            },
+            created: function() {
+                this.listarTodos();
+                this.exibirLista();
+            }
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
 </html>
